@@ -9,8 +9,8 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent
 
-SOURCE_DIR = r"C:\Dataset-IA\NA_Fish_Dataset\Fish_Dataset"
-DESTINATION_DIR = BASE_DIR / "Fish_Dataset_Splitted"
+SOURCE_DIR = BASE_DIR / "animals-dataset"
+DESTINATION_DIR = BASE_DIR / "Animals_Dataset_Splitted"
 
 TRAIN_RATIO = 0.80
 VALID_RATIO = 0.10
@@ -40,29 +40,18 @@ for species in sorted(os.listdir(SOURCE_DIR)):
 
     print(f"\nProcesando {species}")
 
-    # Buscar carpeta de imágenes (no GT)
-    image_folder = None
-
-    for folder in os.listdir(species_path):
-
-        folder_path = os.path.join(species_path, folder)
-
-        if (
-            os.path.isdir(folder_path)
-            and "GT" not in folder.upper()
-        ):
-            image_folder = folder_path
-            break
-
-    if image_folder is None:
-        print("No se encontró carpeta de imágenes.")
-        continue
+    # La carpeta de imágenes es directamente la de la especie
+    image_folder = species_path
 
     # Obtener imágenes
     images = [
         img for img in os.listdir(image_folder)
         if img.lower().endswith(IMAGE_EXTENSIONS)
     ]
+
+    if not images:
+        print(f"No se encontraron imágenes en {species}.")
+        continue
 
     random.shuffle(images)
 

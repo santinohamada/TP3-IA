@@ -1,0 +1,63 @@
+Procesando araña
+Total: 4821
+ Train: 3856
+ Validation: 482
+ Test: 483
+
+Procesando ardilla
+Total: 1862
+ Train: 1489
+ Validation: 186
+ Test: 187
+
+Procesando caballo
+Total: 2623
+ Train: 2098
+ Validation: 262
+ Test: 263
+
+Procesando elefante
+Total: 1446
+ Train: 1156
+ Validation: 144
+ Test: 146
+
+Procesando gallina
+Total: 3098
+ Train: 2478
+ Validation: 309
+ Test: 311
+
+Procesando gato
+Total: 1668
+ Train: 1334
+ Validation: 166
+ Test: 168
+
+Procesando mariposa
+Total: 2112
+ Train: 1689
+ Validation: 211
+ Test: 212
+
+Procesando oveja
+Total: 1820
+ Train: 1456
+ Validation: 182
+ Test: 182
+
+Procesando perro
+Total: 4863
+ Train: 3890
+ Validation: 486
+ Test: 487
+
+Procesando vaca
+Total: 1866
+ Train: 1492
+ Validation: 186
+ Test: 188
+
+===================================
+Dataset creado correctamente.
+===================================
