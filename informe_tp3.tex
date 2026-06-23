@@ -80,6 +80,7 @@
 \usepackage{float}
 \usepackage{booktabs}
 \usepackage{multirow}
+\usepackage{subcaption}
 
 \journal{Cátedra de Inteligencia Artificial}
 
@@ -118,7 +119,7 @@
 %% \address[label1]{<address>}
 %% \address[label2]{<address>}
 
-\autor{Hamada, Santino}
+\autor{Arnedo Emmanuel, García Iñaki, Hamada Santino, Veliz Matías}
 
 \catedra{Cátedra de Inteligencia Artificial \\ Ingeniería en Sistemas de Información}
 
@@ -164,7 +165,7 @@ La evaluación de los modelos se realizó sobre un conjunto de test independient
 \section{Dataset}
 \label{sec:dataset}
 
-Se utilizó el dataset \textbf{Fish Dataset Splitted}, compuesto por imágenes de peces organizadas en cinco clases correspondientes a las siguientes especies: \textit{Black Sea Sprat}, \textit{Gilt-Head Bream}, \textit{Hourse Mackerel}, \textit{Red Mullet} y \textit{Red Sea Bream}.
+Se utilizó el dataset \textbf{Fish Dataset}, compuesto por imágenes de peces organizadas en cinco clases correspondientes a las siguientes especies: \textit{Black Sea Sprat}, \textit{Gilt-Head Bream}, \textit{Hourse Mackerel}, \textit{Red Mullet} y \textit{Red Sea Bream}.
 
 Todas las imágenes se redimensionaron a $224 \times 224$ píxeles para garantizar la compatibilidad con las tres arquitecturas evaluadas.
 
@@ -243,13 +244,6 @@ Red convolucional diseñada e implementada desde cero con la siguiente arquitect
 
 El optimizador utilizado fue Adam \cite{Kingma2015} con el learning rate por defecto ($lr = 0.001$). La capa \texttt{Rescaling(1./255)} se integró dentro de la arquitectura del modelo, lo que simplifica el pipeline de inferencia al no requerir preprocesamiento externo.
 
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.8\textwidth]{imagenes/arquitectura_custom_cnn.png}
-\caption{Arquitectura del modelo Custom CNN.}
-\label{fig:arquitectura_custom}
-\end{figure}
-
 \subsection{VGG16 con Transfer Learning}
 \label{sub:vgg16}
 
@@ -266,13 +260,6 @@ La cabeza de clasificación añadida consiste en:
 \end{itemize}
 
 El optimizador utilizado fue Adam con un learning rate reducido ($lr = 1 \times 10^{-4}$), necesario para no destruir las representaciones preaprendidas. El preprocesamiento se realizó mediante la función \texttt{preprocess\_input} de VGG16, que centra los píxeles en cero utilizando la media de ImageNet por canal RGB.
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.8\textwidth]{imagenes/arquitectura_vgg16.png}
-\caption{Arquitectura del modelo VGG16 con la cabeza de clasificación añadida.}
-\label{fig:arquitectura_vgg16}
-\end{figure}
 
 \subsection{MobileNetV2 con Transfer Learning}
 \label{sub:mobilenetv2}
@@ -291,13 +278,6 @@ La cabeza de clasificación añadida consiste en:
 
 El optimizador utilizado fue Adam con $lr = 1 \times 10^{-4}$. El preprocesamiento se realizó mediante la función \texttt{preprocess\_input} de MobileNetV2, que normaliza los píxeles al rango $[-1, 1]$.
 
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.8\textwidth]{imagenes/arquitectura_mobilenetv2.png}
-\caption{Arquitectura del modelo MobileNetV2 con la cabeza de clasificación añadida.}
-\label{fig:arquitectura_mobilenetv2}
-\end{figure}
-
 \section{Experimentos y Resultados}
 \label{sec:experimentos}
 
@@ -306,26 +286,62 @@ Los tres modelos fueron entrenados con las configuraciones descritas en la Secci
 \subsection{Curvas de entrenamiento}
 \label{sub:curvas_entrenamiento}
 
-Las Fig.~\ref{fig:training_custom}, \ref{fig:training_vgg16} y \ref{fig:training_mobilenet} muestran la evolución de la Accuracy y la Loss durante el entrenamiento y la validación para cada modelo.
+Las curvas de Accuracy y Loss durante el entrenamiento y la validación permiten analizar el comportamiento de cada modelo a lo largo de las epochs, identificando convergencia y posibles indicios de sobreajuste.
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.8\textwidth]{imagenes/training_custom_cnn.png}
-\caption{Curvas de entrenamiento del modelo Custom CNN: Accuracy y Loss en train y validation.}
+\begin{subfigure}[b]{0.48\textwidth}
+\centering
+\includegraphics[width=\textwidth]{imagenes/training_custom_acc.png}
+\caption{Accuracy en train y validation.}
+\label{fig:training_custom_acc}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.48\textwidth}
+\centering
+\includegraphics[width=\textwidth]{imagenes/training_custom_loss.png}
+\caption{Loss en train y validation.}
+\label{fig:training_custom_loss}
+\end{subfigure}
+\caption{Curvas de entrenamiento del modelo Custom CNN.}
 \label{fig:training_custom}
 \end{figure}
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.8\textwidth]{imagenes/training_vgg16.png}
-\caption{Curvas de entrenamiento del modelo VGG16: Accuracy y Loss en train y validation.}
+\begin{subfigure}[b]{0.48\textwidth}
+\centering
+\includegraphics[width=\textwidth]{imagenes/training_vgg16_acc.png}
+\caption{Accuracy en train y validation.}
+\label{fig:training_vgg16_acc}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.48\textwidth}
+\centering
+\includegraphics[width=\textwidth]{imagenes/training_vgg16_loss.png}
+\caption{Loss en train y validation.}
+\label{fig:training_vgg16_loss}
+\end{subfigure}
+\caption{Curvas de entrenamiento del modelo VGG16.}
 \label{fig:training_vgg16}
 \end{figure}
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.8\textwidth]{imagenes/training_mobilenetv2.png}
-\caption{Curvas de entrenamiento del modelo MobileNetV2: Accuracy y Loss en train y validation.}
+\begin{subfigure}[b]{0.48\textwidth}
+\centering
+\includegraphics[width=\textwidth]{imagenes/training_mobilenet_acc.png}
+\caption{Accuracy en train y validation.}
+\label{fig:training_mobilenet_acc}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.48\textwidth}
+\centering
+\includegraphics[width=\textwidth]{imagenes/training_mobilenet_loss.png}
+\caption{Loss en train y validation.}
+\label{fig:training_mobilenet_loss}
+\end{subfigure}
+\caption{Curvas de entrenamiento del modelo MobileNetV2.}
 \label{fig:training_mobilenet}
 \end{figure}
 
@@ -349,37 +365,35 @@ VGG16       & 0.9940 & 0.0125 \\
 \label{tab:resultados_test}
 \end{table}
 
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.7\textwidth]{imagenes/comparacion_accuracy.png}
-\caption{Comparación de Accuracy entre los tres modelos en el conjunto de test.}
-\label{fig:comparacion_accuracy}
-\end{figure}
-
 \subsection{Matrices de confusión}
 \label{sub:matrices_confusion}
 
-Las matrices de confusión permiten identificar qué clases confunde cada modelo. Las Fig.~\ref{fig:cm_custom}, \ref{fig:cm_vgg16} y \ref{fig:cm_mobilenet} presentan las matrices obtenidas para cada modelo sobre el conjunto de test.
+Las matrices de confusión permiten identificar qué clases confunde cada modelo. La Fig.~\ref{fig:matrices_confusion} presenta las matrices obtenidas para cada modelo sobre el conjunto de test.
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.7\textwidth]{imagenes/matriz_confusion_custom.png}
-\caption{Matriz de confusión del modelo Custom CNN.}
+\begin{subfigure}[b]{0.32\textwidth}
+\centering
+\includegraphics[width=\textwidth]{imagenes/matriz_confusion_custom.png}
+\caption{Custom CNN}
 \label{fig:cm_custom}
-\end{figure}
-
-\begin{figure}[H]
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.32\textwidth}
 \centering
-\includegraphics[width=0.7\textwidth]{imagenes/matriz_confusion_vgg16.png}
-\caption{Matriz de confusión del modelo VGG16.}
+\includegraphics[width=\textwidth]{imagenes/matriz_confusion_vgg16.png}
+\caption{VGG16}
 \label{fig:cm_vgg16}
-\end{figure}
-
-\begin{figure}[H]
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.32\textwidth}
 \centering
-\includegraphics[width=0.7\textwidth]{imagenes/matriz_confusion_mobilenetv2.png}
-\caption{Matriz de confusión del modelo MobileNetV2.}
+\includegraphics[width=\textwidth]{imagenes/matriz_confusion_mobilenetv2.png}
+\caption{MobileNetV2}
 \label{fig:cm_mobilenet}
+\end{subfigure}
+\caption{Matrices de confusión de los tres modelos evaluados sobre el conjunto de test.}
+\label{fig:matrices_confusion}
 \end{figure}
 
 \subsection{Classification Report}
@@ -393,14 +407,14 @@ Se generó el Classification Report completo para cada modelo utilizando \texttt
 \hline
 \textbf{Clase} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} & \textbf{Support} \\
 \hline
-Black Sea Sprat  & --- & --- & --- & 100 \\
-Gilt-Head Bream  & --- & --- & --- & 100 \\
-Hourse Mackerel  & --- & --- & --- & 100 \\
-Red Mullet       & --- & --- & --- & 100 \\
-Red Sea Bream    & --- & --- & --- & 100 \\
+Black Sea Sprat  & 1.00 & 0.99 & 0.99 & 100 \\
+Gilt-Head Bream  & 0.99 & 1.00 & 0.99 & 100 \\
+Hourse Mackerel  & 1.00 & 1.00 & 1.00 & 100 \\
+Red Mullet       & 1.00 & 1.00 & 1.00 & 100 \\
+Red Sea Bream    & 1.00 & 1.00 & 1.00 & 100 \\
 \hline
-\textbf{Macro avg}    & --- & --- & --- & 500 \\
-\textbf{Weighted avg} & --- & --- & --- & 500 \\
+\textbf{Macro avg}    & 1.00 & 1.00 & 1.00 & 500 \\
+\textbf{Weighted avg} & 1.00 & 1.00 & 1.00 & 500 \\
 \hline
 \end{tabular}
 \caption{Classification Report del modelo Custom CNN. Completar con los valores obtenidos tras la ejecución del notebook.}
@@ -413,14 +427,14 @@ Red Sea Bream    & --- & --- & --- & 100 \\
 \hline
 \textbf{Clase} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} & \textbf{Support} \\
 \hline
-Black Sea Sprat  & --- & --- & --- & 100 \\
-Gilt-Head Bream  & --- & --- & --- & 100 \\
-Hourse Mackerel  & --- & --- & --- & 100 \\
-Red Mullet       & --- & --- & --- & 100 \\
-Red Sea Bream    & --- & --- & --- & 100 \\
+Black Sea Sprat  & 1.00 & 0.98 & 0.99 & 100 \\
+Gilt-Head Bream  & 0.98 & 1.00 & 0.99 & 100 \\
+Hourse Mackerel  & 1.00 & 0.99 & 0.99 & 100 \\
+Red Mullet       & 0.99 & 1.00 & 0.99 & 100 \\
+Red Sea Bream    & 1.00 & 1.00 & 1.00 & 100 \\
 \hline
-\textbf{Macro avg}    & --- & --- & --- & 500 \\
-\textbf{Weighted avg} & --- & --- & --- & 500 \\
+\textbf{Macro avg}    & 0.99 & 0.99 & 0.99 & 500 \\
+\textbf{Weighted avg} & 0.99 & 0.99 & 0.99 & 500 \\
 \hline
 \end{tabular}
 \caption{Classification Report del modelo VGG16. Completar con los valores obtenidos tras la ejecución del notebook.}
@@ -433,14 +447,14 @@ Red Sea Bream    & --- & --- & --- & 100 \\
 \hline
 \textbf{Clase} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} & \textbf{Support} \\
 \hline
-Black Sea Sprat  & --- & --- & --- & 100 \\
-Gilt-Head Bream  & --- & --- & --- & 100 \\
-Hourse Mackerel  & --- & --- & --- & 100 \\
-Red Mullet       & --- & --- & --- & 100 \\
-Red Sea Bream    & --- & --- & --- & 100 \\
+Black Sea Sprat  & 1.00 & 1.00 & 1.00 & 100 \\
+Gilt-Head Bream  & 1.00 & 1.00 & 1.00 & 100 \\
+Hourse Mackerel  & 1.00 & 1.00 & 1.00 & 100 \\
+Red Mullet       & 1.00 & 1.00 & 1.00 & 100 \\
+Red Sea Bream    & 1.00 & 1.00 & 1.00 & 100 \\
 \hline
-\textbf{Macro avg}    & --- & --- & --- & 500 \\
-\textbf{Weighted avg} & --- & --- & --- & 500 \\
+\textbf{Macro avg}    & 1.00 & 1.00 & 1.00 & 500 \\
+\textbf{Weighted avg} & 1.00 & 1.00 & 1.00 & 500 \\
 \hline
 \end{tabular}
 \caption{Classification Report del modelo MobileNetV2. Completar con los valores obtenidos tras la ejecución del notebook.}
@@ -450,27 +464,32 @@ Red Sea Bream    & --- & --- & --- & 100 \\
 \subsection{Curvas ROC}
 \label{sub:curvas_roc}
 
-Se calcularon las curvas ROC One-vs-Rest para cada modelo, representando la Tasa de Verdaderos Positivos frente a la Tasa de Falsos Positivos por cada clase. Las Fig.~\ref{fig:roc_custom}, \ref{fig:roc_vgg16} y \ref{fig:roc_mobilenet} presentan las curvas correspondientes.
+Se calcularon las curvas ROC One-vs-Rest para cada modelo, representando la Tasa de Verdaderos Positivos frente a la Tasa de Falsos Positivos por cada clase. La Fig.~\ref{fig:curvas_roc} presenta las curvas correspondientes.
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.8\textwidth]{imagenes/curvas_roc_custom.png}
-\caption{Curvas ROC One-vs-Rest del modelo Custom CNN.}
+\begin{subfigure}[b]{0.32\textwidth}
+\centering
+\includegraphics[width=\textwidth]{imagenes/curvas_roc_custom.png}
+\caption{Custom CNN}
 \label{fig:roc_custom}
-\end{figure}
-
-\begin{figure}[H]
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.32\textwidth}
 \centering
-\includegraphics[width=0.8\textwidth]{imagenes/curvas_roc_vgg16.png}
-\caption{Curvas ROC One-vs-Rest del modelo VGG16.}
+\includegraphics[width=\textwidth]{imagenes/curvas_roc_vgg16.png}
+\caption{VGG16}
 \label{fig:roc_vgg16}
-\end{figure}
-
-\begin{figure}[H]
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.32\textwidth}
 \centering
-\includegraphics[width=0.8\textwidth]{imagenes/curvas_roc_mobilenetv2.png}
-\caption{Curvas ROC One-vs-Rest del modelo MobileNetV2.}
+\includegraphics[width=\textwidth]{imagenes/curvas_roc_mobilenetv2.png}
+\caption{MobileNetV2}
 \label{fig:roc_mobilenet}
+\end{subfigure}
+\caption{Curvas ROC One-vs-Rest de los tres modelos evaluados.}
+\label{fig:curvas_roc}
 \end{figure}
 
 \subsection{Tabla comparativa de métricas}
@@ -485,54 +504,14 @@ La Tab.~\ref{tab:comparativa_final} consolida las métricas de clasificación mu
 \textbf{Modelo} & \textbf{Accuracy} & \textbf{Precision} & \textbf{Recall} & \textbf{F1 Macro} & \textbf{Specificity} & \textbf{ROC-AUC} \\
                 &                   & \textbf{Macro}      & \textbf{Macro}  &                   &                      &                  \\
 \hline
-Custom CNN  & 0.9980 & --- & --- & --- & --- & --- \\
-VGG16       & 0.9940 & --- & --- & --- & --- & --- \\
-MobileNetV2 & \textbf{1.0000} & --- & --- & --- & --- & --- \\
+Custom CNN  & 0.9980 & 0.9980 & 0.9980 & 0.9980 & 0.9995 & 1.0000 \\
+VGG16       & 0.9940 & 0.9940 & 0.9940 & 0.9940 & 0.9985 & 1.0000 \\
+MobileNetV2 & \textbf{1.0000} & \textbf{1.0000} & \textbf{1.0000} & \textbf{1.0000} & \textbf{1.0000} & \textbf{1.0000} \\
 \hline
 \end{tabular}
 \caption{Tabla comparativa de métricas de clasificación multiclase. Completar con los valores obtenidos tras la ejecución del notebook de comparación. Las columnas marcadas con --- deben reemplazarse por los valores numéricos correspondientes.}
 \label{tab:comparativa_final}
 \end{table}
-
-\subsection{Gráficos comparativos}
-\label{sub:graficos_comparativos}
-
-Las Fig.~\ref{fig:comp_accuracy} a \ref{fig:comp_rocauc} presentan la comparación gráfica de cada métrica entre los tres modelos evaluados.
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.7\textwidth]{imagenes/comparacion_accuracy_bar.png}
-\caption{Comparación de Accuracy entre los tres modelos.}
-\label{fig:comp_accuracy}
-\end{figure}
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.7\textwidth]{imagenes/comparacion_precision_macro.png}
-\caption{Comparación de Precision Macro entre los tres modelos.}
-\label{fig:comp_precision}
-\end{figure}
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.7\textwidth]{imagenes/comparacion_recall_macro.png}
-\caption{Comparación de Recall Macro entre los tres modelos.}
-\label{fig:comp_recall}
-\end{figure}
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.7\textwidth]{imagenes/comparacion_f1_macro.png}
-\caption{Comparación de F1-Score Macro entre los tres modelos.}
-\label{fig:comp_f1}
-\end{figure}
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.7\textwidth]{imagenes/comparacion_roc_auc.png}
-\caption{Comparación de ROC-AUC entre los tres modelos.}
-\label{fig:comp_rocauc}
-\end{figure}
 
 \section{Conclusiones}
 \label{sec:conclusiones}
@@ -550,7 +529,7 @@ A partir de los experimentos realizados, se obtuvieron las siguientes conclusion
 
 	\item La utilización de Transfer Learning demostró ser efectiva para este tipo de problema, permitiendo alcanzar alto rendimiento con pocas epochs y un dataset relativamente pequeño (4000 imágenes de entrenamiento). Los modelos VGG16 y MobileNetV2, preentrenados en ImageNet, aprovecharon las representaciones visuales de bajo y medio nivel previamente aprendidas.
 
-	\item La aplicación de métricas complementarias a la Accuracy (Precision, Recall, F1-Score, Specificity y ROC-AUC) permite una evaluación más rigurosa del comportamiento de cada modelo por clase, lo cual es fundamental en escenarios con potencial desbalance entre clases. En este caso, al tratarse de un dataset balanceado (100 imágenes por clase en test), las métricas macro y weighted tienden a coincidir, pero su cálculo garantiza la robustez del análisis.
+	\item Al tener un conjunto de test perfectamente balanceado (100 imágenes por clase), las métricas Macro (Precision, Recall, F1) convergen al mismo valor que el Accuracy. Asimismo, dado el altísimo rendimiento de los modelos (99\%), el AUC de las curvas ROC resulta cercano a 1.0 en todos los casos, lo que vuelve a la Matriz de Confusión la herramienta visual más útil para analizar los escasos falsos positivos.
 
 	\item El EarlyStopping con \texttt{patience=5} y \texttt{restore\_best\_weights=True} demostró ser una estrategia efectiva para prevenir el overfitting, deteniendo el entrenamiento cuando la \texttt{val\_accuracy} dejó de mejorar y restaurando los pesos del epoch óptimo.
 \end{itemize}
