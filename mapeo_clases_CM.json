@@ -1,0 +1,26 @@
+{
+  "class_indices": {
+    "ara\u00f1a": 0,
+    "ardilla": 1,
+    "caballo": 2,
+    "elefante": 3,
+    "gallina": 4,
+    "gato": 5,
+    "mariposa": 6,
+    "oveja": 7,
+    "perro": 8,
+    "vaca": 9
+  },
+  "index_to_class": {
+    "0": "ara\u00f1a",
+    "1": "ardilla",
+    "2": "caballo",
+    "3": "elefante",
+    "4": "gallina",
+    "5": "gato",
+    "6": "mariposa",
+    "7": "oveja",
+    "8": "perro",
+    "9": "vaca"
+  }
+}
