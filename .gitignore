@@ -1,1 +1,17 @@
-.venv/
+# Entornos virtuales
+.venv*
+venv/
+env/
+
+# Jupyter / Notebooks
+.ipynb_checkpoints/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Archivos temporales de rescate
+*.bak
+keras_temp*/
+fix_and_convert*.py
