@@ -18,62 +18,11 @@
 %% Template article for Elsevier's document class `elsarticle'
 %% with numbered style bibliographic references
 %%
-%% $Id: elsarticle-template-1-num.tex 149 2009-10-08 05:01:15Z rishi $
-%% $URL: http://lenova.river-valley.com/svn/elsbst/trunk/elsarticle-template-1-num.tex $
-%%
+
 \documentclass[1p,12pt]{elsarticle}
 
-%% Use the option review to obtain double line spacing
-%% \documentclass[preprint,review,12pt]{elsarticle}
-
-%% Use the options 1p,twocolumn; 3p; 3p,twocolumn; 5p; or 5p,twocolumn
-%% for a journal layout:
-%% \documentclass[final,1p,times]{elsarticle}
-%% \documentclass[final,1p,times,twocolumn]{elsarticle}
-%% \documentclass[final,3p,times]{elsarticle}
-%% \documentclass[final,3p,times,twocolumn]{elsarticle}
-%% \documentclass[final,5p,times]{elsarticle}
-%% \documentclass[final,5p,times,twocolumn]{elsarticle}
-
-%% if you use PostScript figures in your article
-%% use the graphics package for simple commands
-%% \usepackage{graphics}
-%% or use the graphicx package for more complicated commands
-%% \usepackage{graphicx}
-%% or use the epsfig package if you prefer to use the old commands
-%% \usepackage{epsfig}
-
-%% The amssymb package provides various useful mathematical symbols
 \usepackage{amssymb}
-%% The amsthm package provides extended theorem environments
-%% \usepackage{amsthm}
-
-%% The lineno packages adds line numbers. Start line numbering with
-%% \begin{linenumbers}, end it with \end{linenumbers}. Or switch it on
-%% for the whole article with \linenumbers after \end{frontmatter}.
 \usepackage{lineno}
-
-%% natbib.sty is loaded by default. However, natbib options can be
-%% provided with \biboptions{...} command. Following options are
-%% valid:
-
-%%   round  -  round parentheses are used (default)
-%%   square -  square brackets are used   [option]
-%%   curly  -  curly braces are used      {option}
-%%   angle  -  angle brackets are used    <option>
-%%   semicolon  -  multiple citations separated by semi-colon
-%%   colon  - same as semicolon, an earlier confusion
-%%   comma  -  separated by comma
-%%   numbers-  selects numerical citations
-%%   super  -  numerical citations as superscripts
-%%   sort   -  sorts multiple citations according to order in ref. list
-%%   sort&compress   -  like sort, but also compresses numerical citations
-%%   compress - compresses without sorting
-%%
-%% \biboptions{comma,round}
-
-% \biboptions{}
-
 \usepackage{epsfig}
 \usepackage[spanish]{babel}
 \usepackage[labelsep=endash]{caption}
@@ -81,6 +30,20 @@
 \usepackage{booktabs}
 \usepackage{multirow}
 \usepackage{subcaption}
+
+%% Paquetes para evitar desbordamiento
+\usepackage{microtype}       % mejora el espaciado tipográfico y reduce overfull hbox
+\usepackage{array}           % columnas con ancho fijo en tablas
+\usepackage{tabularx}        % tablas que se ajustan al ancho del texto
+\usepackage{adjustbox}       % redimensionar tablas que se salen del margen
+\usepackage[hyphens]{url}    % permite partir URLs en saltos de línea
+
+%% Permite que LaTeX parta palabras largas en código monoespaciado
+\usepackage{listings}
+\lstset{breaklines=true, breakatwhitespace=true, basicstyle=\small\ttfamily}
+
+%% Evita que hbox overful queden sin advertencia silenciosa
+\setlength{\emergencystretch}{3em}
 
 \journal{Cátedra de Inteligencia Artificial}
 
@@ -91,122 +54,130 @@
 
 \begin{frontmatter}
 
-%% Title, authors and addresses
-
-%% use the tnoteref command within \title for footnotes;
-%% use the tnotetext command for the associated footnote;
-%% use the fnref command within \author or \address for footnotes;
-%% use the fntext command for the associated footnote;
-%% use the corref command within \author for corresponding author footnotes;
-%% use the cortext command for the associated footnote;
-%% use the ead command for the email address,
-%% and the form \ead[url] for the home page:
-%%
-%% \title{Title\tnoteref{label1}}
-%% \tnotetext[label1]{}
-%% \author{Name\corref{cor1}\fnref{label2}}
-%% \ead{email address}
-%% \ead[url]{home page}
-%% \fntext[label2]{}
-%% \cortext[cor1]{}
-%% \address{Address\fnref{label3}}
-%% \fntext[label3]{}
-
-\title{Clasificación de Imágenes de Peces mediante Redes Neuronales Convolucionales \\ Trabajo Práctico N°3}
-
-%% use optional labels to link authors explicitly to addresses:
-%% \author[label1,label2]{<author name>}
-%% \address[label1]{<address>}
-%% \address[label2]{<address>}
+\title{Clasificación de Imágenes de Animales mediante Redes Neuronales
+       Convolucionales \\ Trabajo Práctico N°3}
 
 \autor{Arnedo Emmanuel, García Iñaki, Hamada Santino, Veliz Matías}
 
-\catedra{Cátedra de Inteligencia Artificial \\ Ingeniería en Sistemas de Información}
+\catedra{Cátedra de Inteligencia Artificial \\ Ingeniería en Sistemas de
+         Información}
 
 \begin{abstract}
-%% Text of abstract
-Se presenta la comparación de tres arquitecturas de redes neuronales convolucionales (CNN) para la clasificación de imágenes de peces en cinco categorías: \textit{Black Sea Sprat}, \textit{Gilt-Head Bream}, \textit{Hourse Mackerel}, \textit{Red Mullet} y \textit{Red Sea Bream}. Se implementaron un modelo Custom CNN diseñado desde cero y dos modelos basados en Transfer Learning utilizando VGG16 \cite{Simonyan2015} y MobileNetV2 \cite{Sandler2018} preentrenados en ImageNet \cite{Deng2009}. La evaluación se realizó sobre el conjunto de test mediante métricas de clasificación multiclase: Accuracy, Precision, Recall, F1-Score, Specificity y ROC-AUC (One-vs-Rest). Los tres modelos alcanzaron un rendimiento superior al 99\% en Accuracy, siendo MobileNetV2 el de mejor desempeño con un Accuracy de 1.0000 y el menor costo computacional, lo que lo posiciona como la alternativa más eficiente para este problema.
+Se presenta la comparación de tres arquitecturas de redes neuronales
+convolucionales (CNN) para la clasificación de imágenes de animales en diez
+categorías: araña, ardilla, caballo, elefante, gallina, gato, mariposa, oveja,
+perro y vaca. Se implementaron un modelo Custom CNN diseñado desde cero y dos
+modelos basados en Transfer Learning utilizando VGG16~\cite{Simonyan2015} y
+MobileNetV2~\cite{Sandler2018} preentrenados en ImageNet~\cite{Deng2009}. La
+evaluación se realizó sobre el conjunto de test mediante métricas de
+clasificación multiclase: Accuracy, Precision, Recall, F1-Score, Specificity y
+ROC-AUC (One-vs-Rest). Los tres modelos alcanzaron desempeños variados, siendo
+VGG16 el de mejor desempeño con un Accuracy de 0.9612 y el menor costo
+computacional, lo que lo posiciona como la alternativa más eficiente para este
+problema.
 \end{abstract}
 
 \begin{keyword}
-Redes Neuronales Convolucionales \sep Transfer Learning \sep Clasificación de Imágenes \sep VGG16 \sep MobileNetV2 \sep Clasificación Multiclase
-%% keywords here, in the form: keyword \sep keyword
-
-%% MSC codes here, in the form: \MSC code \sep code
-%% or \MSC[2008] code \sep code (2000 is the default)
-
+Redes Neuronales Convolucionales \sep Transfer Learning \sep Clasificación de
+Imágenes \sep VGG16 \sep MobileNetV2 \sep Clasificación Multiclase
 \end{keyword}
 
 \end{frontmatter}
-
-%%
-%% Start line numbering here if you want
-%%
-% \linenumbers
 
 %% main text
 \section{Introducción}
 \label{sec:intro}
 
-El presente trabajo aborda el problema de clasificación de imágenes de peces en cinco especies distintas mediante redes neuronales convolucionales (CNN) \cite{LeCun2015}. El objetivo es comparar tres arquitecturas diferentes y evaluar su rendimiento utilizando métricas robustas para clasificación multiclase, evitando depender exclusivamente de la métrica Accuracy.
+El presente trabajo aborda el problema de clasificación de imágenes de animales
+en diez especies distintas mediante redes neuronales convolucionales
+(CNN)~\cite{LeCun2015}. El objetivo es comparar tres arquitecturas diferentes y
+evaluar su rendimiento utilizando métricas robustas para clasificación
+multiclase, evitando depender exclusivamente de la métrica Accuracy.
 
 Se implementaron tres modelos con estrategias diferenciadas:
 
 \begin{enumerate}
-	\item \textbf{Custom CNN:} arquitectura convolucional diseñada e implementada desde cero, con cuatro bloques convolucionales y una cabeza de clasificación densa.
-	\item \textbf{VGG16:} modelo preentrenado en ImageNet \cite{Deng2009} utilizado como extractor de características (Feature Extraction), con todas las capas de la base congeladas \cite{Simonyan2015}.
-	\item \textbf{MobileNetV2:} modelo preentrenado en ImageNet diseñado para eficiencia computacional, también utilizado en modo Feature Extraction \cite{Sandler2018}.
+    \item \textbf{Custom CNN:} arquitectura convolucional diseñada e implementada
+          desde cero, con cuatro bloques convolucionales y una cabeza de
+          clasificación densa.
+    \item \textbf{VGG16:} modelo preentrenado en ImageNet~\cite{Deng2009}
+          utilizado como extractor de características (Feature Extraction), con
+          todas las capas de la base congeladas~\cite{Simonyan2015}.
+    \item \textbf{MobileNetV2:} modelo preentrenado en ImageNet diseñado para
+          eficiencia computacional, también utilizado en modo Feature
+          Extraction~\cite{Sandler2018}.
 \end{enumerate}
 
-La técnica de Transfer Learning \cite{Pan2010} permite reutilizar el conocimiento aprendido por modelos entrenados en conjuntos de datos masivos (ImageNet: más de 14 millones de imágenes en 1000 clases) y aplicarlo a problemas más específicos y con menor disponibilidad de datos.
+La técnica de Transfer Learning~\cite{Pan2010} permite reutilizar el
+conocimiento aprendido por modelos entrenados en conjuntos de datos masivos
+(ImageNet: más de 14 millones de imágenes en 1000 clases) y aplicarlo a
+problemas más específicos y con menor disponibilidad de datos.
 
-La evaluación de los modelos se realizó sobre un conjunto de test independiente, empleando un conjunto de métricas que incluye Accuracy, Precision (macro), Recall (macro), F1-Score (macro), Specificity (macro) y ROC-AUC (One-vs-Rest) \cite{Sokolova2009}. Se priorizó el F1-Score Macro como métrica principal debido a que permite una evaluación equilibrada del rendimiento por clase, lo cual resulta relevante ante posibles desbalances en la distribución de las clases.
+La evaluación de los modelos se realizó sobre un conjunto de test independiente,
+empleando un conjunto de métricas que incluye Accuracy, Precision (macro),
+Recall (macro), F1-Score (macro), Specificity (macro) y ROC-AUC
+(One-vs-Rest)~\cite{Sokolova2009}. Se priorizó el F1-Score Macro como métrica
+principal debido a que permite una evaluación equilibrada del rendimiento por
+clase, lo cual resulta relevante ante posibles desbalances en la distribución de
+las clases.
 
 \section{Dataset}
 \label{sec:dataset}
 
-Se utilizó el dataset \textbf{Fish Dataset}, compuesto por imágenes de peces organizadas en cinco clases correspondientes a las siguientes especies: \textit{Black Sea Sprat}, \textit{Gilt-Head Bream}, \textit{Hourse Mackerel}, \textit{Red Mullet} y \textit{Red Sea Bream}.
+Se utilizó el dataset \textbf{Animals Dataset}, compuesto por 26.179 imágenes
+organizadas en 10 clases desbalanceadas: araña, ardilla, caballo, elefante,
+gallina, gato, mariposa, oveja, perro y vaca.
 
-Todas las imágenes se redimensionaron a $224 \times 224$ píxeles para garantizar la compatibilidad con las tres arquitecturas evaluadas.
+Todas las imágenes se redimensionaron a $224 \times 224$ píxeles para
+garantizar la compatibilidad con las tres arquitecturas evaluadas.
 
 \subsection{Distribución del dataset}
 \label{sub:distribucion}
 
-El dataset se dividió en tres subconjuntos, cuya distribución se presenta en la Tab.~\ref{tab:distribucion_dataset}.
+El dataset se dividió en tres subconjuntos, cuya distribución se presenta en la
+Tab.~\ref{tab:distribucion_dataset}.
 
-\begin{table}[H]
+\begin{table}[h]
 \centering
-\begin{tabular}{l r r}
+\begin{tabular}{lrr}
 \hline
-\textbf{Subconjunto} & \textbf{Total de imágenes} & \textbf{Imágenes por clase} \\
+\textbf{Subconjunto} & \textbf{Total de imágenes} &
+\textbf{Imágenes por clase} \\
 \hline
-Train      & 4000 & 800 \\
-Validation & 500  & 100 \\
-Test       & 500  & 100 \\
+Train      & 20938 & Desbalanceado \\
+Validation & 2614  & Desbalanceado \\
+Test       & 2627  & Desbalanceado \\
 \hline
 \end{tabular}
-\caption{Distribución del dataset Fish Dataset Splitted.}
+\caption{Distribución del dataset Animals Dataset Splitted.}
 \label{tab:distribucion_dataset}
 \end{table}
 
 \subsection{Data Augmentation}
 \label{sub:data_augmentation}
 
-Para mejorar la capacidad de generalización de los modelos y reducir el overfitting, se aplicaron transformaciones aleatorias de Data Augmentation \cite{Shorten2019} \textbf{únicamente al conjunto de entrenamiento}. Los parámetros configurados se detallan en la Tab.~\ref{tab:data_augmentation}.
+Para mejorar la capacidad de generalización de los modelos y reducir el
+overfitting, se aplicaron transformaciones aleatorias de Data
+Augmentation~\cite{Shorten2019} \textbf{únicamente al conjunto de
+entrenamiento}. Los parámetros configurados se detallan en la
+Tab.~\ref{tab:data_augmentation}.
 
-\begin{table}[H]
+% Tabla con adjustbox para evitar desbordamiento
+\begin{table}[h]
 \centering
-\begin{tabular}{l l l}
+\begin{adjustbox}{max width=\textwidth}
+\begin{tabular}{lll}
 \hline
 \textbf{Parámetro} & \textbf{Valor} & \textbf{Descripción} \\
 \hline
-\texttt{rotation\_range}       & 20°   & Rotación aleatoria de hasta $\pm$20 grados \\
-\texttt{width\_shift\_range}   & 0.2   & Desplazamiento horizontal de hasta 20\% \\
-\texttt{height\_shift\_range}  & 0.2   & Desplazamiento vertical de hasta 20\% \\
-\texttt{zoom\_range}           & 0.2   & Zoom aleatorio de hasta 20\% \\
-\texttt{horizontal\_flip}      & True  & Espejo horizontal aleatorio \\
+\texttt{rotation\_range}      & 20°  & Rotación aleatoria de hasta $\pm$20 grados \\
+\texttt{width\_shift\_range}  & 0.2  & Desplazamiento horizontal de hasta 20\% \\
+\texttt{height\_shift\_range} & 0.2  & Desplazamiento vertical de hasta 20\% \\
+\texttt{zoom\_range}          & 0.2  & Zoom aleatorio de hasta 20\% \\
+\texttt{horizontal\_flip}     & True & Espejo horizontal aleatorio \\
 \hline
 \end{tabular}
+\end{adjustbox}
 \caption{Parámetros de Data Augmentation aplicados al conjunto de entrenamiento.}
 \label{tab:data_augmentation}
 \end{table}
@@ -214,79 +185,147 @@ Para mejorar la capacidad de generalización de los modelos y reducir el overfit
 \section{Propuesta de Desarrollo}
 \label{sec:propuesta}
 
-Se propuso implementar tres arquitecturas CNN con estrategias diferenciadas para abordar el problema de clasificación multiclase de imágenes de peces: una red diseñada desde cero (Custom CNN) y dos redes preentrenadas en ImageNet aplicando Transfer Learning en modo Feature Extraction (VGG16 y MobileNetV2).
+Se propuso implementar tres arquitecturas CNN con estrategias diferenciadas para
+abordar el problema de clasificación multiclase de imágenes de animales: una red
+diseñada desde cero (Custom CNN) y dos redes preentrenadas en ImageNet
+aplicando Transfer Learning en modo Feature Extraction (VGG16 y MobileNetV2).
 
 Todos los modelos comparten la siguiente configuración base de entrenamiento:
 
 \begin{itemize}
-	\item \textbf{Loss:} Sparse Categorical Crossentropy.
-	\item \textbf{Métrica de monitoreo:} Accuracy.
-	\item \textbf{Epochs máximos:} 50.
-	\item \textbf{EarlyStopping:} \texttt{patience=5}, monitorea \texttt{val\_accuracy}, \texttt{restore\_best\_weights=True}.
-	\item \textbf{Batch size:} 32.
+    \item \textbf{Loss:} Sparse Categorical Crossentropy.
+    \item \textbf{Métrica de monitoreo:} Accuracy.
+    \item \textbf{Epochs máximos:} 50.
+    \item \textbf{EarlyStopping:} \texttt{patience=5}, monitorea
+          \texttt{val\_accuracy},\\ \texttt{restore\_best\_weights=True}.
+    \item \textbf{Batch size:} 32.
 \end{itemize}
 
 \subsection{Custom CNN}
 \label{sub:custom_cnn}
 
-Red convolucional diseñada e implementada desde cero con la siguiente arquitectura:
+Red convolucional diseñada e implementada desde cero con la siguiente
+arquitectura:
 
 \begin{itemize}
-	\item \texttt{Rescaling(1./255)}: normalización de píxeles del rango [0, 255] al rango [0, 1].
-	\item \texttt{Conv2D(32, 3, ``same'', ReLU)} $\rightarrow$ \texttt{MaxPooling2D()}.
-	\item \texttt{Conv2D(64, 3, ``same'', ReLU)} $\rightarrow$ \texttt{MaxPooling2D()}.
-	\item \texttt{Conv2D(128, 3, ``same'', ReLU)} $\rightarrow$ \texttt{MaxPooling2D()}.
-	\item \texttt{Conv2D(256, 3, ``same'', ReLU)}.
-	\item \texttt{GlobalAveragePooling2D()}.
-	\item \texttt{Dense(128, ReLU)} $\rightarrow$ \texttt{Dropout(0.4)}.
-	\item \texttt{Dense(5, Softmax)}: capa de salida con 5 clases.
+    \item \texttt{Conv2D(32,\,3,\,``same'',\,ReLU)} $\rightarrow$
+          \texttt{BatchNorm()} $\rightarrow$ \texttt{MaxPool2D()}.
+    \item \texttt{Conv2D(64,\,3,\,``same'',\,ReLU)} $\rightarrow$
+          \texttt{BatchNorm()} $\rightarrow$ \texttt{MaxPool2D()}.
+    \item \texttt{Conv2D(128,\,3,\,``same'',\,ReLU)} $\rightarrow$
+          \texttt{BatchNorm()} $\rightarrow$ \texttt{MaxPool2D()}.
+    \item \texttt{Conv2D(256,\,3,\,``same'',\,ReLU)} $\rightarrow$
+          \texttt{BatchNorm()}.
+    \item \texttt{GlobalAveragePooling2D()}.
+    \item \texttt{Dense(256,\,ReLU)} $\rightarrow$ \texttt{BatchNorm()}
+          $\rightarrow$ \texttt{Dropout(0.3)}.
+    \item \texttt{Dense(10,\,Softmax)}: capa de salida con 10 clases.
 \end{itemize}
 
-El optimizador utilizado fue Adam \cite{Kingma2015} con el learning rate por defecto ($lr = 0.001$). La capa \texttt{Rescaling(1./255)} se integró dentro de la arquitectura del modelo, lo que simplifica el pipeline de inferencia al no requerir preprocesamiento externo.
+El optimizador utilizado fue Adam~\cite{Kingma2015} con un learning rate
+explícito de $lr = 1 \times 10^{-4}$ para asegurar una convergencia más
+estable. La normalización de las imágenes mediante
+\texttt{rescale=1./255} se delegó al generador de datos
+(\texttt{ImageDataGenerator}) durante el entrenamiento. Esto implica que,
+durante la inferencia, es necesario aplicar este preprocesamiento de manera
+externa (dividiendo los píxeles por 255) antes de inyectar los tensores a la
+red.
+
+\subsection{Manejo del Desbalanceo: Class Weights}
+\label{sub:class_weights}
+
+Dado que el \textit{Animals Dataset} presenta un fuerte desbalanceo de clases
+(por ejemplo, la clase \textit{perro} posee 4863 imágenes mientras que
+\textit{elefante} cuenta con solo 1446), entrenar a los modelos sin ninguna
+compensación provocaría un sesgo hacia las clases mayoritarias.
+
+Para mitigar este problema sin recurrir a técnicas de submuestreo
+(undersampling) o sobremuestreo (oversampling) que alteren el dataset original,
+se utilizó el parámetro \texttt{class\_weight} proporcionado por Keras durante
+el entrenamiento. Los pesos de las clases se calcularon matemáticamente mediante
+la heurística de balanceo de scikit-learn (\texttt{compute\_class\_weight}),
+cuya fórmula es inversamente proporcional a la frecuencia de cada clase:
+
+\begin{equation}
+\label{eq:class_weight}
+w_j = \frac{N}{K \cdot n_j}
+\end{equation}
+
+donde $w_j$ es el peso asignado a la clase $j$, $N$ es el total de muestras del
+dataset, $K$ es el número total de clases, y $n_j$ es la cantidad de muestras
+pertenecientes a la clase $j$. Al pasar este diccionario de pesos a la red
+neuronal, la función de pérdida penaliza de forma mucho más severa los errores
+cometidos en clases minoritarias, obligando al modelo a prestarles igual
+atención durante el descenso de gradiente.
 
 \subsection{VGG16 con Transfer Learning}
 \label{sub:vgg16}
 
-Se utilizó la red VGG16 \cite{Simonyan2015}, preentrenada en ImageNet, aplicando Transfer Learning en modo Feature Extraction. Todas las capas de la base fueron congeladas (\texttt{layer.trainable = False}), cargando el modelo con \texttt{include\_top=False} para excluir las capas densas originales de clasificación.
+Se utilizó la red VGG16~\cite{Simonyan2015}, preentrenada en ImageNet,
+aplicando Transfer Learning en modo Feature Extraction. Todas las capas de la
+base fueron congeladas (\texttt{layer.trainable = False}), cargando el modelo
+con \texttt{include\_top=False} para excluir las capas densas originales de
+clasificación.
 
-La base congelada de VGG16 cuenta con aproximadamente 14.7 millones de parámetros no entrenables, organizados en 5 bloques de capas convolucionales con filtros de tamaño $3 \times 3$ y operaciones de MaxPooling2D.
+La base congelada de VGG16 cuenta con aproximadamente 14.7 millones de
+parámetros no entrenables, organizados en 5 bloques de capas convolucionales
+con filtros de tamaño $3 \times 3$ y operaciones de MaxPooling2D.
 
 La cabeza de clasificación añadida consiste en:
 
 \begin{itemize}
-	\item \texttt{GlobalAveragePooling2D()}.
-	\item \texttt{Dense(256, ReLU)} $\rightarrow$ \texttt{Dropout(0.3)}.
-	\item \texttt{Dense(5, Softmax)}: capa de salida con 5 clases.
+    \item \texttt{GlobalAveragePooling2D()}.
+    \item \texttt{Dense(256,\,ReLU)} $\rightarrow$ \texttt{Dropout(0.3)}.
+    \item \texttt{Dense(10,\,Softmax)}: capa de salida con 10 clases.
 \end{itemize}
 
-El optimizador utilizado fue Adam con un learning rate reducido ($lr = 1 \times 10^{-4}$), necesario para no destruir las representaciones preaprendidas. El preprocesamiento se realizó mediante la función \texttt{preprocess\_input} de VGG16, que centra los píxeles en cero utilizando la media de ImageNet por canal RGB.
+El optimizador utilizado fue Adam con un learning rate reducido
+($lr = 1 \times 10^{-4}$), necesario para no destruir las representaciones
+preaprendidas. El preprocesamiento se realizó mediante la función
+\texttt{preprocess\_input} de VGG16, que centra los píxeles en cero utilizando
+la media de ImageNet por canal RGB.
 
 \subsection{MobileNetV2 con Transfer Learning}
 \label{sub:mobilenetv2}
 
-Se utilizó MobileNetV2 \cite{Sandler2018}, arquitectura diseñada para operar eficientemente en dispositivos con recursos limitados. Fue preentrenada en ImageNet y aplicada en modo Feature Extraction, con todas las capas de la base congeladas.
+Se utilizó MobileNetV2~\cite{Sandler2018}, arquitectura diseñada para operar
+eficientemente en dispositivos con recursos limitados. Fue preentrenada en
+ImageNet y aplicada en modo Feature Extraction, con todas las capas de la base
+congeladas.
 
-La innovación clave de MobileNetV2 radica en el uso de \textbf{Depthwise Separable Convolutions}, que separan la convolución espacial de la combinación de canales reduciendo drásticamente el costo computacional, y \textbf{Inverted Residual Blocks} con conexiones residuales \cite{He2016}. La base cuenta con aproximadamente 3.4 millones de parámetros.
+La innovación clave de MobileNetV2 radica en el uso de \textbf{Depthwise
+Separable Convolutions}, que separan la convolución espacial de la combinación
+de canales reduciendo drásticamente el costo computacional, y \textbf{Inverted
+Residual Blocks} con conexiones residuales~\cite{He2016}. La base cuenta con
+aproximadamente 3.4 millones de parámetros.
 
 La cabeza de clasificación añadida consiste en:
 
 \begin{itemize}
-	\item \texttt{GlobalAveragePooling2D()}.
-	\item \texttt{Dense(128, ReLU)} $\rightarrow$ \texttt{Dropout(0.3)}.
-	\item \texttt{Dense(5, Softmax)}: capa de salida con 5 clases.
+    \item \texttt{GlobalAveragePooling2D()}.
+    \item \texttt{Dense(128,\,ReLU)} $\rightarrow$ \texttt{Dropout(0.3)}.
+    \item \texttt{Dense(10,\,Softmax)}: capa de salida con 10 clases.
 \end{itemize}
 
-El optimizador utilizado fue Adam con $lr = 1 \times 10^{-4}$. El preprocesamiento se realizó mediante la función \texttt{preprocess\_input} de MobileNetV2, que normaliza los píxeles al rango $[-1, 1]$.
+El optimizador utilizado fue Adam con $lr = 1 \times 10^{-4}$. El
+preprocesamiento se realizó mediante la función \texttt{preprocess\_input} de
+MobileNetV2, que normaliza los píxeles al rango $[-1, 1]$.
 
 \section{Experimentos y Resultados}
 \label{sec:experimentos}
 
-Los tres modelos fueron entrenados con las configuraciones descritas en la Sección~\ref{sec:propuesta} y evaluados sobre el conjunto de test (500 imágenes, 100 por clase). La evaluación se realizó utilizando las siguientes métricas de clasificación multiclase: Accuracy, Precision Macro, Recall Macro, F1-Score Macro, Specificity Macro y ROC-AUC One-vs-Rest.
+Los tres modelos fueron entrenados con las configuraciones descritas en la
+Sección~\ref{sec:propuesta} y evaluados sobre el conjunto de test (2627
+imágenes, desbalanceadas). La evaluación se realizó utilizando las siguientes
+métricas de clasificación multiclase: Accuracy, Precision Macro, Recall Macro,
+F1-Score Macro, Specificity Macro y ROC-AUC One-vs-Rest.
 
 \subsection{Curvas de entrenamiento}
 \label{sub:curvas_entrenamiento}
 
-Las curvas de Accuracy y Loss durante el entrenamiento y la validación permiten analizar el comportamiento de cada modelo a lo largo de las epochs, identificando convergencia y posibles indicios de sobreajuste.
+Las curvas de Accuracy y Loss durante el entrenamiento y la validación permiten
+analizar el comportamiento de cada modelo a lo largo de las epochs,
+identificando convergencia y posibles indicios de sobreajuste.
 
 \begin{figure}[H]
 \centering
@@ -348,17 +387,18 @@ Las curvas de Accuracy y Loss durante el entrenamiento y la validación permiten
 \subsection{Resultados de Accuracy y Loss en Test}
 \label{sub:resultados_accuracy}
 
-La Tab.~\ref{tab:resultados_test} presenta los resultados de Accuracy y Loss obtenidos por cada modelo sobre el conjunto de test.
+La Tab.~\ref{tab:resultados_test} presenta los resultados de Accuracy y Loss
+obtenidos por cada modelo sobre el conjunto de test.
 
-\begin{table}[H]
+\begin{table}[h]
 \centering
-\begin{tabular}{l c c}
+\begin{tabular}{lcc}
 \hline
 \textbf{Modelo} & \textbf{Accuracy} & \textbf{Loss} \\
 \hline
-MobileNetV2 & \textbf{1.0000} & 0.0213 \\
-Custom CNN  & 0.9980 & 0.0159 \\
-VGG16       & 0.9940 & 0.0125 \\
+VGG16       & \textbf{0.9612} & 0.1417 \\
+MobileNetV2 & 0.9558          & 0.1414 \\
+Custom CNN  & 0.7168          & 0.8774 \\
 \hline
 \end{tabular}
 \caption{Resultados de Accuracy y Loss en el conjunto de test.}
@@ -368,172 +408,225 @@ VGG16       & 0.9940 & 0.0125 \\
 \subsection{Matrices de confusión}
 \label{sub:matrices_confusion}
 
-Las matrices de confusión permiten identificar qué clases confunde cada modelo. La Fig.~\ref{fig:matrices_confusion} presenta las matrices obtenidas para cada modelo sobre el conjunto de test.
+Las matrices de confusión permiten identificar las clases que cada modelo
+confunde con mayor frecuencia, proporcionando una visión detallada del
+desempeño por categoría. Las Fig.~\ref{fig:cm_custom},
+Fig.~\ref{fig:cm_vgg16} y Fig.~\ref{fig:cm_mobilenet} presentan las matrices
+obtenidas para cada modelo sobre el conjunto de test.
 
 \begin{figure}[H]
 \centering
-\begin{subfigure}[b]{0.32\textwidth}
-\centering
-\includegraphics[width=\textwidth]{imagenes/matriz_confusion_custom.png}
-\caption{Custom CNN}
+\includegraphics[width=0.63\textwidth]{imagenes/matriz_confusion_custom.png}
+\caption{Matriz de confusión del modelo Custom CNN.}
 \label{fig:cm_custom}
-\end{subfigure}
-\hfill
-\begin{subfigure}[b]{0.32\textwidth}
-\centering
-\includegraphics[width=\textwidth]{imagenes/matriz_confusion_vgg16.png}
-\caption{VGG16}
-\label{fig:cm_vgg16}
-\end{subfigure}
-\hfill
-\begin{subfigure}[b]{0.32\textwidth}
-\centering
-\includegraphics[width=\textwidth]{imagenes/matriz_confusion_mobilenetv2.png}
-\caption{MobileNetV2}
-\label{fig:cm_mobilenet}
-\end{subfigure}
-\caption{Matrices de confusión de los tres modelos evaluados sobre el conjunto de test.}
-\label{fig:matrices_confusion}
 \end{figure}
 
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.63\textwidth]{imagenes/matriz_confusion_vgg16.png}
+\caption{Matriz de confusión del modelo VGG16.}
+\label{fig:cm_vgg16}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.63\textwidth]{imagenes/matriz_confusion_mobilenetv2.png}
+\caption{Matriz de confusión del modelo MobileNetV2.}
+\label{fig:cm_mobilenet}
+\end{figure}
 \subsection{Classification Report}
 \label{sub:classification_report}
 
-Se generó el Classification Report completo para cada modelo utilizando \texttt{sklearn.metrics.classification\_report}. A continuación se presentan las tablas de reporte por clase para cada arquitectura.
+Se generó el Classification Report completo para cada modelo utilizando
+\texttt{sklearn.metrics.classification\_report}. A continuación se presentan
+las tablas de reporte por clase para cada arquitectura.
 
-\begin{table}[H]
+\begin{table}[h]
 \centering
-\begin{tabular}{l c c c c}
+\begin{adjustbox}{max width=\textwidth}
+\begin{tabular}{lcccc}
 \hline
-\textbf{Clase} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} & \textbf{Support} \\
+\textbf{Clase} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} &
+\textbf{Support} \\
 \hline
-Black Sea Sprat  & 1.00 & 0.99 & 0.99 & 100 \\
-Gilt-Head Bream  & 0.99 & 1.00 & 0.99 & 100 \\
-Hourse Mackerel  & 1.00 & 1.00 & 1.00 & 100 \\
-Red Mullet       & 1.00 & 1.00 & 1.00 & 100 \\
-Red Sea Bream    & 1.00 & 1.00 & 1.00 & 100 \\
+Araña       & 0.90 & 0.78 & 0.83 & 483 \\
+Ardilla     & 0.68 & 0.73 & 0.71 & 187 \\
+Caballo     & 0.86 & 0.63 & 0.73 & 263 \\
+Elefante    & 0.41 & 0.95 & 0.57 & 146 \\
+Gallina     & 0.81 & 0.83 & 0.82 & 311 \\
+Gato        & 0.58 & 0.61 & 0.59 & 168 \\
+Mariposa    & 0.73 & 0.91 & 0.81 & 212 \\
+Oveja       & 0.63 & 0.77 & 0.70 & 182 \\
+Perro       & 0.87 & 0.48 & 0.62 & 487 \\
+Vaca        & 0.63 & 0.73 & 0.67 & 188 \\
 \hline
-\textbf{Macro avg}    & 1.00 & 1.00 & 1.00 & 500 \\
-\textbf{Weighted avg} & 1.00 & 1.00 & 1.00 & 500 \\
+\textbf{Macro avg}    & 0.71 & 0.74 & 0.70 & 2627 \\
+\textbf{Weighted avg} & 0.76 & 0.72 & 0.72 & 2627 \\
 \hline
 \end{tabular}
-\caption{Classification Report del modelo Custom CNN. Completar con los valores obtenidos tras la ejecución del notebook.}
-\label{tab:report_custom}
+\end{adjustbox}
+\caption{Classification Report del modelo Custom CNN.}
+\label{tab:report_custom_cnn}
 \end{table}
 
-\begin{table}[H]
+\begin{table}[h]
 \centering
-\begin{tabular}{l c c c c}
+\begin{adjustbox}{max width=\textwidth}
+\begin{tabular}{lcccc}
 \hline
-\textbf{Clase} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} & \textbf{Support} \\
+\textbf{Clase} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} &
+\textbf{Support} \\
 \hline
-Black Sea Sprat  & 1.00 & 0.98 & 0.99 & 100 \\
-Gilt-Head Bream  & 0.98 & 1.00 & 0.99 & 100 \\
-Hourse Mackerel  & 1.00 & 0.99 & 0.99 & 100 \\
-Red Mullet       & 0.99 & 1.00 & 0.99 & 100 \\
-Red Sea Bream    & 1.00 & 1.00 & 1.00 & 100 \\
+Araña       & 1.00 & 0.97 & 0.98 & 483 \\
+Ardilla     & 0.96 & 0.96 & 0.96 & 187 \\
+Caballo     & 0.95 & 0.93 & 0.94 & 263 \\
+Elefante    & 0.95 & 0.99 & 0.97 & 146 \\
+Gallina     & 0.99 & 0.99 & 0.99 & 311 \\
+Gato        & 0.95 & 0.96 & 0.96 & 168 \\
+Mariposa    & 0.94 & 1.00 & 0.97 & 212 \\
+Oveja       & 0.89 & 0.97 & 0.93 & 182 \\
+Perro       & 0.98 & 0.94 & 0.96 & 487 \\
+Vaca        & 0.90 & 0.92 & 0.91 & 188 \\
 \hline
-\textbf{Macro avg}    & 0.99 & 0.99 & 0.99 & 500 \\
-\textbf{Weighted avg} & 0.99 & 0.99 & 0.99 & 500 \\
+\textbf{Macro avg}    & 0.95 & 0.96 & 0.96 & 2627 \\
+\textbf{Weighted avg} & 0.96 & 0.96 & 0.96 & 2627 \\
 \hline
 \end{tabular}
-\caption{Classification Report del modelo VGG16. Completar con los valores obtenidos tras la ejecución del notebook.}
+\end{adjustbox}
+\caption{Classification Report del modelo VGG16.}
 \label{tab:report_vgg16}
 \end{table}
 
-\begin{table}[H]
+\begin{table}[h]
 \centering
-\begin{tabular}{l c c c c}
+\begin{adjustbox}{max width=\textwidth}
+\begin{tabular}{lcccc}
 \hline
-\textbf{Clase} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} & \textbf{Support} \\
+\textbf{Clase} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} &
+\textbf{Support} \\
 \hline
-Black Sea Sprat  & 1.00 & 1.00 & 1.00 & 100 \\
-Gilt-Head Bream  & 1.00 & 1.00 & 1.00 & 100 \\
-Hourse Mackerel  & 1.00 & 1.00 & 1.00 & 100 \\
-Red Mullet       & 1.00 & 1.00 & 1.00 & 100 \\
-Red Sea Bream    & 1.00 & 1.00 & 1.00 & 100 \\
+Araña       & 1.00 & 0.98 & 0.99 & 483 \\
+Ardilla     & 0.97 & 0.94 & 0.96 & 187 \\
+Caballo     & 0.96 & 0.92 & 0.94 & 263 \\
+Elefante    & 0.93 & 0.96 & 0.95 & 146 \\
+Gallina     & 0.97 & 0.99 & 0.98 & 311 \\
+Gato        & 0.95 & 0.97 & 0.96 & 168 \\
+Mariposa    & 0.97 & 0.99 & 0.98 & 212 \\
+Oveja       & 0.86 & 0.93 & 0.89 & 182 \\
+Perro       & 0.98 & 0.94 & 0.96 & 487 \\
+Vaca        & 0.87 & 0.90 & 0.88 & 188 \\
 \hline
-\textbf{Macro avg}    & 1.00 & 1.00 & 1.00 & 500 \\
-\textbf{Weighted avg} & 1.00 & 1.00 & 1.00 & 500 \\
+\textbf{Macro avg}    & 0.95 & 0.95 & 0.95 & 2627 \\
+\textbf{Weighted avg} & 0.96 & 0.96 & 0.96 & 2627 \\
 \hline
 \end{tabular}
-\caption{Classification Report del modelo MobileNetV2. Completar con los valores obtenidos tras la ejecución del notebook.}
-\label{tab:report_mobilenet}
+\end{adjustbox}
+\caption{Classification Report del modelo MobileNetV2.}
+\label{tab:report_mobilenetv2}
 \end{table}
 
+\clearpage
 \subsection{Curvas ROC}
 \label{sub:curvas_roc}
 
-Se calcularon las curvas ROC One-vs-Rest para cada modelo, representando la Tasa de Verdaderos Positivos frente a la Tasa de Falsos Positivos por cada clase. La Fig.~\ref{fig:curvas_roc} presenta las curvas correspondientes.
+Se calcularon las curvas ROC One-vs-Rest para cada modelo, representando la
+Tasa de Verdaderos Positivos frente a la Tasa de Falsos Positivos para cada
+clase. Las Fig.~\ref{fig:roc_custom}, Fig.~\ref{fig:roc_vgg16} y
+Fig.~\ref{fig:roc_mobilenet} presentan las curvas correspondientes de cada
+modelo.
 
 \begin{figure}[H]
 \centering
-\begin{subfigure}[b]{0.32\textwidth}
-\centering
-\includegraphics[width=\textwidth]{imagenes/curvas_roc_custom.png}
-\caption{Custom CNN}
+\includegraphics[width=0.63\textwidth]{imagenes/curvas_roc_custom.png}
+\caption{Curvas ROC One-vs-Rest del modelo Custom CNN.}
 \label{fig:roc_custom}
-\end{subfigure}
-\hfill
-\begin{subfigure}[b]{0.32\textwidth}
-\centering
-\includegraphics[width=\textwidth]{imagenes/curvas_roc_vgg16.png}
-\caption{VGG16}
-\label{fig:roc_vgg16}
-\end{subfigure}
-\hfill
-\begin{subfigure}[b]{0.32\textwidth}
-\centering
-\includegraphics[width=\textwidth]{imagenes/curvas_roc_mobilenetv2.png}
-\caption{MobileNetV2}
-\label{fig:roc_mobilenet}
-\end{subfigure}
-\caption{Curvas ROC One-vs-Rest de los tres modelos evaluados.}
-\label{fig:curvas_roc}
 \end{figure}
 
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.63\textwidth]{imagenes/curvas_roc_vgg16.png}
+\caption{Curvas ROC One-vs-Rest del modelo VGG16.}
+\label{fig:roc_vgg16}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.63\textwidth]{imagenes/curvas_roc_mobilenetv2.png}
+\caption{Curvas ROC One-vs-Rest del modelo MobileNetV2.}
+\label{fig:roc_mobilenet}
+\end{figure}
 \subsection{Tabla comparativa de métricas}
 \label{sub:tabla_comparativa}
 
-La Tab.~\ref{tab:comparativa_final} consolida las métricas de clasificación multiclase obtenidas por cada modelo. Se priorizó el F1-Score Macro como métrica principal, dado que se trata de un problema de clasificación donde cada imagen corresponde a una única especie de pez y el F1-Score Macro proporciona una evaluación equilibrada del rendimiento por clase, siendo robusta ante posibles desbalances en la distribución.
+La Tab.~\ref{tab:comparativa_final} consolida las métricas de clasificación
+multiclase obtenidas por cada modelo. Se priorizó el F1-Score Macro como
+métrica principal, dado que se trata de un problema de clasificación donde cada
+imagen corresponde a una única especie y el F1-Score Macro proporciona una
+evaluación equilibrada del rendimiento por clase, siendo robusta ante posibles
+desbalances en la distribución.
 
-\begin{table}[H]
+\begin{table}[h]
 \centering
-\begin{tabular}{l c c c c c c}
+\begin{adjustbox}{max width=\textwidth}
+\begin{tabular}{lcccccc}
 \hline
-\textbf{Modelo} & \textbf{Accuracy} & \textbf{Precision} & \textbf{Recall} & \textbf{F1 Macro} & \textbf{Specificity} & \textbf{ROC-AUC} \\
-                &                   & \textbf{Macro}      & \textbf{Macro}  &                   &                      &                  \\
+\textbf{Modelo} & \textbf{Accuracy} & \textbf{Precision} & \textbf{Recall} &
+\textbf{F1 Macro} & \textbf{Specificity} & \textbf{ROC-AUC} \\
+ & & \textbf{Macro} & \textbf{Macro} & & & \\
 \hline
-Custom CNN  & 0.9980 & 0.9980 & 0.9980 & 0.9980 & 0.9995 & 1.0000 \\
-VGG16       & 0.9940 & 0.9940 & 0.9940 & 0.9940 & 0.9985 & 1.0000 \\
-MobileNetV2 & \textbf{1.0000} & \textbf{1.0000} & \textbf{1.0000} & \textbf{1.0000} & \textbf{1.0000} & \textbf{1.0000} \\
+VGG16       & \textbf{0.9612} & 0.96 & 0.96 & 0.96 & 0.96 & 0.96 \\
+MobileNetV2 & 0.9558          & 0.95 & 0.95 & 0.95 & 0.96 & 0.96 \\
+Custom CNN  & 0.7168          & 0.71 & 0.74 & 0.70 & 0.76 & 0.72 \\
 \hline
 \end{tabular}
-\caption{Tabla comparativa de métricas de clasificación multiclase. Completar con los valores obtenidos tras la ejecución del notebook de comparación. Las columnas marcadas con --- deben reemplazarse por los valores numéricos correspondientes.}
+\end{adjustbox}
+\caption{Tabla comparativa de métricas de clasificación multiclase.}
 \label{tab:comparativa_final}
 \end{table}
 
 \section{Conclusiones}
 \label{sec:conclusiones}
 
-A partir de los experimentos realizados, se obtuvieron las siguientes conclusiones:
+A partir de los experimentos realizados, se obtuvieron las siguientes
+conclusiones:
 
 \begin{itemize}
-	\item Los tres modelos evaluados alcanzaron un rendimiento superior al 99\% de Accuracy sobre el conjunto de test, lo que indica que las tres arquitecturas son capaces de resolver el problema de clasificación de las cinco especies de peces con alta efectividad.
+    \item Los modelos evaluados demostraron comportamientos muy variados,
+          dejando en evidencia la dificultad de trabajar con 10 clases altamente
+          desbalanceadas.
 
-	\item \textbf{MobileNetV2} obtuvo el mejor rendimiento, alcanzando un Accuracy de 1.0000 (100\%) con el menor costo computacional entre los modelos evaluados, dado que su base cuenta con aproximadamente 3.4 millones de parámetros frente a los 14.7 millones de VGG16. Esto lo posiciona como la alternativa más eficiente en términos de balance entre rendimiento y recursos.
+    \item \textbf{VGG16} obtuvo el mejor rendimiento, alcanzando un Accuracy de
+          0.9612 (96.12\%). Al actuar como un poderoso extractor de
+          características gracias a su preentrenamiento masivo en ImageNet,
+          logró separar eficazmente las 10 especies animales.
 
-	\item \textbf{Custom CNN} alcanzó un Accuracy de 0.9980, demostrando que una arquitectura diseñada desde cero puede competir con modelos preentrenados cuando el dataset presenta características diferenciables entre las clases. Sin embargo, este enfoque requiere mayor experimentación en el diseño de la arquitectura y más epochs para converger.
+    \item \textbf{MobileNetV2} quedó en un muy cercano segundo lugar con un
+          Accuracy de 0.9558 (95.58\%), posicionándose como la alternativa más
+          eficiente en el mundo real, dado que requiere una ínfima fracción del
+          costo computacional de VGG16 para obtener el mismo resultado práctico.
 
-	\item \textbf{VGG16} obtuvo un Accuracy de 0.9940 con la menor Loss (0.0125), lo cual indica alta confianza en sus predicciones pese a tener la menor Accuracy relativa. Su principal desventaja radica en el elevado consumo de recursos: el modelo ocupa aproximadamente 60~MB en disco y 14.7 millones de parámetros solo en la base.
+    \item \textbf{Custom CNN} alcanzó un Accuracy de 0.7168 (71.68\%). A
+          pesar de contar con regularización, este modelo entrenado desde cero
+          encontró su techo de aprendizaje rápidamente debido a su arquitectura
+          más simple y la falta de pesos inicializados. Al enfrentarse a 10
+          clases con alta variabilidad intraclase (distintos fondos y poses),
+          la red no logró extraer descriptores abstractos tan robustos como las
+          redes preentrenadas en ImageNet, estancándose y sin lograr aumentar su
+          precisión. Esto demuestra empíricamente la superioridad del
+          \textit{Transfer Learning} frente a arquitecturas inicializadas desde
+          cero cuando la complejidad de las imágenes aumenta.
 
-	\item La utilización de Transfer Learning demostró ser efectiva para este tipo de problema, permitiendo alcanzar alto rendimiento con pocas epochs y un dataset relativamente pequeño (4000 imágenes de entrenamiento). Los modelos VGG16 y MobileNetV2, preentrenados en ImageNet, aprovecharon las representaciones visuales de bajo y medio nivel previamente aprendidas.
+    \item La utilización del parámetro \texttt{class\_weight} en el
+          entrenamiento fue de vital importancia. Sin esta penalización a nivel
+          función de pérdida, los modelos habrían colapsado estadísticamente
+          hacia las clases mayoritarias (como el perro, con 4800 imágenes)
+          ignorando por completo a las minoritarias (como el elefante, con 1400
+          imágenes).
 
-	\item Al tener un conjunto de test perfectamente balanceado (100 imágenes por clase), las métricas Macro (Precision, Recall, F1) convergen al mismo valor que el Accuracy. Asimismo, dado el altísimo rendimiento de los modelos (99\%), el AUC de las curvas ROC resulta cercano a 1.0 en todos los casos, lo que vuelve a la Matriz de Confusión la herramienta visual más útil para analizar los escasos falsos positivos.
-
-	\item El EarlyStopping con \texttt{patience=5} y \texttt{restore\_best\_weights=True} demostró ser una estrategia efectiva para prevenir el overfitting, deteniendo el entrenamiento cuando la \texttt{val\_accuracy} dejó de mejorar y restaurando los pesos del epoch óptimo.
+    \item El EarlyStopping con \texttt{patience=5} y
+          \texttt{restore\_best\_weights=True} demostró ser una estrategia
+          indispensable para prevenir el sobreajuste (overfitting).
 \end{itemize}
-
 
 \bibliographystyle{model1-num-names}
 \bibliography{bibliografia}

@@ -1,0 +1,78 @@
+=============================================================
+GUION DE PRESENTACIÓN - TRABAJO PRÁCTICO 3 (IA)
+=============================================================
+Duración objetivo: 7 a 8 minutos (Aprox. 2 min por integrante)
+Integrantes: 4
+Diapositivas: 12
+=============================================================
+
+[INTEGRANTE 1 - INTRODUCCIÓN Y DATOS]
+
+--- SLIDE 1: Título y Presentación ---
+"Buenas tardes a todos. Somos el grupo [número/nombre] y hoy venimos a exponer nuestro Trabajo Práctico Número 3. Nuestro desafío fue meternos de lleno en la Visión Computacional: construir y entrenar un modelo de Inteligencia Artificial capaz de distinguir 10 especies de animales distintas utilizando arquitecturas de Deep Learning. A lo largo de esta presentación, les mostraremos no solo los resultados, sino las decisiones de ingeniería y el rigor matemático que tomamos para llegar a una efectividad superior al 95%."
+
+--- SLIDE 2: El Dataset y su Importancia ---
+"En Inteligencia Artificial existe una regla de oro: 'Basura entra, basura sale'. La arquitectura más sofisticada del mundo va a fracasar si los datos no sirven. Por eso, el 'Animals Dataset' fue un desafío excelente. Como ven en pantalla, no usamos fotos de laboratorio; usamos imágenes del mundo real. 
+Al tener fondos ruidosos, iluminación pobre y animales en posiciones raras, obligamos a la red a no hacer trampa. Si todas las fotos de vacas tuvieran pasto de fondo, la red aprendería a detectar el color verde en lugar de a la vaca. La diversidad del dataset fuerza al algoritmo a buscar características anatómicas reales. Para que la red pudiera digerir esto, aplicamos un preprocesamiento estricto: redimensionamos todo a matrices de 224x224 píxeles para tener tensores uniformes, y normalizamos los canales RGB a valores entre 0 y 1. Esto es vital, porque los algoritmos de optimización convergen muchísimo más rápido cuando trabajan con números pequeños y estandarizados."
+
+--- SLIDE 3: El problema del Desbalance ---
+"Pero nos topamos con el principal enemigo del Machine Learning: el desbalance de clases. Observen el gráfico: la clase 'Perro' domina con casi 5000 imágenes, mientras que el 'Elefante' apenas supera las 1400. Si entrenábamos así, la red iba a caer en un 'mínimo local' (un atajo perezoso), clasificando todo como Perro porque estadísticamente tendría razón casi siempre. 
+Para resolverlo sin perder datos valiosos, aplicamos 'Class Weights'. Calculamos un multiplicador matemático inversamente proporcional a la cantidad de imágenes. En resumen: le codificamos a la red que el error (la 'Loss') al equivocarse con un Elefante duele muchísimo más que equivocarse con un Perro, obligando al algoritmo a prestar extrema atención a las minorías durante la propagación hacia atrás (Backpropagation)."
+
+=============================================================
+
+[INTEGRANTE 2 - ESTRATEGIA Y ARQUITECTURAS]
+
+--- SLIDE 4: División de los Datos ---
+"Con los datos de alta calidad y balanceados, el paso más crítico era la división para evitar el 'Data Leakage' o fuga de datos. Si un modelo se evalúa a sí mismo con las imágenes que usó para entrenar, se auto-engaña. Por eso fuimos tajantes:
+- Usamos el 70% para Entrenamiento: Aquí es donde la red hace los cálculos pesados y ajusta sus pesos internos para extraer patrones.
+- Separamos un 15% para Validación: Este conjunto es nuestro termómetro. Nos permite monitorear si la red está aprendiendo a generalizar o si está cayendo en Overfitting (memorizando los píxeles de las fotos de entrenamiento). Al validar en cada ciclo, podemos frenar el entrenamiento a tiempo si vemos que empieza a memorizar.
+- Finalmente, blindamos el último 15% para Testeo. Son imágenes que la red jamás cruzó en su fase de aprendizaje. Es la prueba científica para obtener nuestro Accuracy real y libre de sesgos."
+
+--- SLIDE 5: Los Contrincantes (Arquitecturas) ---
+"Para resolver la clasificación, pusimos a competir tres arquitecturas totalmente distintas.
+1. Primero creamos una Custom CNN (Red Neuronal Convolucional). Esta red funciona pasando pequeños filtros matemáticos sobre la imagen para detectar bordes, luego texturas, y finalmente agrupa eso para reconocer formas. Al diseñarla desde cero, la red arranca 'ciega', con pesos aleatorios, y tiene que aprender todo a pulmón.
+2. Luego dimos el salto al Transfer Learning con VGG16. Acá cambiamos de liga. VGG16 es una red gigantesca que ya fue entrenada por expertos usando más de un millón de imágenes. Sus 13 capas convolucionales ya saben detectar a la perfección formas complejas como hocicos, pelaje o patas. Lo que hicimos fue 'congelar' esa base de conocimiento, para que no se borre, y simplemente le conectamos nuestro propio clasificador al final.
+3. Por último, MobileNetV2. VGG16 es súper inteligente pero computacionalmente es lentísima. MobileNet soluciona esto usando una matemática distinta llamada 'Convoluciones Separables': en lugar de procesar el espacio de la imagen y los colores al mismo tiempo en un cálculo masivo, lo divide en dos cálculos chiquitos. El resultado es una red profundísima de 53 capas que extrae patrones casi con la misma calidad que VGG16, pero pesando una fracción de megabytes. Es el modelo ideal para correr en un celular."
+
+--- SLIDE 6: Estrategias de Entrenamiento (Data Augmentation y Callbacks) ---
+"Sin embargo, tener arquitecturas potentes no sirve de nada si las entrenamos mal. Para evitar que las redes simplemente memorizaran las fotos, aplicamos 'Data Augmentation' durante el entrenamiento: rotamos, hicimos zoom y espejamos las imágenes aleatoriamente. Al distorsionar las fotos, obligamos a la red a no ver nunca la misma imagen dos veces, forzándola a aprender características reales en lugar de píxeles específicos. Cabe aclarar que al conjunto de Validación y Testeo NO le aplicamos estas distorsiones, ya que el examen final debe tomarse en condiciones reales y limpias.
+Además, implementamos 'Callbacks', que son funciones guardianas que vigilan el entrenamiento. Usamos 'Early Stopping' para abortar automáticamente el aprendizaje si el modelo dejaba de mejorar durante 5 iteraciones seguidas, salvándonos del Overfitting y restaurando los mejores pesos matemáticos. Lo combinamos con 'Reduce LR on Plateau', que actúa como un microscopio: si la red se atascaba, frenaba su velocidad de aprendizaje un 70% para que empezara a dar pasos matemáticos más chiquitos y precisos, asegurándonos de extraer hasta la última gota de rendimiento de cada modelo."
+
+=============================================================
+
+[INTEGRANTE 3 - RESULTADOS Y MÉTRICAS]
+
+--- SLIDE 7: Resultados Generales (Accuracy) ---
+"A las tres arquitecturas les pusimos exactamente el mismo clasificador final: una capa de Global Average Pooling que aplana el espacio reduciendo drásticamente los parámetros, seguida de 256 neuronas densas. Al tener el mismo clasificador, podíamos medir puramente la capacidad de cada red para extraer características.
+Nuestra Custom CNN se dio contra un muro estructural y se estancó en un 71% de Accuracy. No tenía la profundidad suficiente para entender patrones tan complejos.
+Sin embargo, el Transfer Learning fue demoledor: MobileNetV2 saltó a un 95%, y VGG16 alcanzó un 96%. Esto prueba matemáticamente que reciclar pesos preentrenados de ImageNet es infinitamente superior a entrenar desde cero en tareas complejas."
+
+--- SLIDE 8: Más allá del Accuracy (F1-Score) ---
+"Pero como ingenieros, sabemos que el Accuracy general puede enmascarar errores graves. Por eso analizamos el F1-Score, que es la media armónica entre la Precisión (cuántos de los que etiquetó como Gato eran realmente Gatos) y el Recall (de todos los Gatos que había, cuántos logró detectar). 
+Esta métrica castiga duramente los falsos positivos y falsos negativos. Observen la tabla: el modelo tiene un F1-Score de 0.98 para los Caballos y Mariposas, lo cual es excelente. Pero su rendimiento baja un poco con los Gatos y los Perros. Esto nos indica que, a nivel de extracción de características, la red está sufriendo para encontrar fronteras claras de decisión entre esas dos clases en particular."
+
+--- SLIDE 9: Análisis de Errores (Matriz de Confusión) ---
+"Esto se evidencia gráficamente en nuestra Matriz de Confusión. Al cruzar las predicciones contra las etiquetas reales, vemos exactamente dónde se 'tropieza' la red. Fíjense en el cruce de Gatos y Perros: es la zona de mayor confusión. Biológicamente tiene todo el sentido, ya que razas pequeñas de perros comparten una morfología facial, formas de orejas y texturas de pelaje casi idénticas a las de un felino. Esto es un dato excelente, porque nos confirma que el modelo está tomando decisiones lógicas basadas en geometría y textura, y no haciendo suposiciones al azar."
+
+=============================================================
+
+[INTEGRANTE 4 - EVALUACIÓN FINAL Y CIERRE]
+
+--- SLIDE 10: Curvas ROC y AUC ---
+"Para ponerle un moño estadístico a nuestro mejor modelo, calculamos las Curvas ROC multi-clase. Esta herramienta evalúa cómo se comporta la red ante todas las variaciones posibles de su umbral de decisión (midiendo la tasa de verdaderos positivos contra los falsos positivos).
+Como pueden observar, las 10 líneas de las clases están fuertemente empujadas hacia la esquina superior izquierda. Esto resulta en un Área Bajo la Curva (AUC) de 0.98 a 0.99. Un AUC tan cercano a 1 indica que el modelo tiene una capacidad de 'separabilidad' altísima. Matemáticamente, las distribuciones de probabilidad de un Perro y una Oveja casi no se superponen en el espacio latente de la red; la red está totalmente segura de sus decisiones."
+
+--- SLIDE 11: La Prueba de Fuego (Nuestras Mascotas) ---
+"Todo esto suena genial en teoría, pero quisimos sacar a la red a la vida real. En esta diapositiva ven fotos que le sacamos a las mascotas de los integrantes del grupo, en condiciones de luz pésimas y ángulos complicados. 
+Para que el modelo pudiera predecirlas, armamos un pipeline idéntico al del dataset: cargamos la imagen, la redimensionamos a 224x224, aplicamos la normalización y pasamos el tensor por la red hasta la última capa 'Softmax', que nos devuelve la distribución de probabilidad.
+Como ven, el modelo identificó a [Nombre de mascota] como un [Animal] con un [XX]% de seguridad. Esto comprueba de forma empírica que nuestro modelo no solo fue un éxito estadístico, sino que aprendió a generalizar al mundo real."
+
+--- SLIDE 12: Conclusiones ---
+"Para cerrar nuestra exposición, resumimos nuestras conclusiones de diseño:
+1. 'No reinventar la rueda': En Visión Computacional, entrenar redes desde cero consume muchísimos recursos para lograr resultados mediocres. El Transfer Learning no es solo una opción, es un estándar de la industria.
+2. 'Los datos mandan': La decisión más importante que tomamos no fue qué red usar, sino cómo tratar el dataset. Sin la división estricta para evitar el Data Leakage y sin los 'Class Weights', las redes se habrían sobreajustado y el proyecto habría fracasado.
+3. Finalmente, comprobamos el 'Trade-Off' de la ingeniería: VGG16 ganó por un 1% de Accuracy, pero a costa de ser un monstruo matemático pesado. MobileNetV2 rindió un 95% utilizando una fracción de parámetros gracias a sus convoluciones separables. Si nuestro objetivo es llevar este sistema a producción, MobileNetV2 es el ganador indiscutido por su eficiencia.
+
+Muchas gracias por su atención y abrimos el espacio a preguntas."
+=============================================================
